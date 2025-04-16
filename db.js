@@ -33,7 +33,7 @@ async function addMessage(content, author_id){
 async function getMessages(){
     try{
         let [users, fields] = await adb
-            .query(`SELECT m.id, m.content, m.author_id
+            .query(`SELECT m.id, m.content, m.author_id, u.login
             FROM Message1 as m
             JOIN User1 as u
             ON m.author_id = u.id`)
@@ -44,5 +44,7 @@ async function getMessages(){
 }
 
 module.exports = {
-    getUsers
+    getUsers,
+    getMessages,
+    addMessage
 }
