@@ -67,3 +67,34 @@ main {
     padding: 0 1rem;
     font-size: 1.2rem;
 }
+
+main.auth {
+    justify-content: center;
+    align-items: center;
+}
+
+main form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+form input {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    border-radius: 0.3rem;
+    border: none;
+    outline: none;
+}
+
+form button {
+    background-color: purple;
+    color: white;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    border-radius: 0.3rem;
+    border: none;
+    cursor: pointer;
+}
