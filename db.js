@@ -53,6 +53,16 @@ async function existUser(login){
     }
 }
 
+async function getUser(login){
+    try{
+        let [users, fields] = await adb
+            .query(`SELECT * FROM User1 where login = ?`, [login])
+        return users
+    }catch(err){
+        throw err.message
+    }
+}
+
 async function addUser(login, password){
     try{
         let [result, fields] = await adb
@@ -68,5 +78,6 @@ module.exports = {
     getMessages,
     addMessage,
     existUser,
-    addUser
+    addUser,
+    getUser
 }

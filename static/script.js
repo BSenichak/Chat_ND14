@@ -1,12 +1,16 @@
 const server = io()
-let nickname = "Maksymcyk"
+let cookies = document.cookie.split(";")
+let nickname = cookies.find((cookie) => cookie.includes("token")).split("=")[1]
+let id = cookies.find((cookie) => cookie.includes("id")).split("=")[1]
+
+console.log(nickname, id)
 document.querySelector(".form button").addEventListener("click", sendMessage)
 
 function sendMessage(){
     let input = document.querySelector(".form input").value
     document.querySelector(".form input").value = ""
     server.emit("message", JSON.stringify({
-        user: nickname,
+        user: parseInt(id),
         message: input
     }))
 }
@@ -22,10 +26,6 @@ server.on("update", (data)=>{
 })
 
 
-alertify.success("Alertify is work!")
-
 document.querySelector("header button").addEventListener("click", ()=>{
-    alertify.prompt("Введіть свій нікнейм", (e , val)=>{
-        if(e) nickname = val
-    })
+    window.location.assign("/login")
 })

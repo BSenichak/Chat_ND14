@@ -1,4 +1,4 @@
-document.querySelector("#register").addEventListener("submit", (e) => {
+document.querySelector("#register")?.addEventListener("submit", (e) => {
     e.preventDefault();
     let data = new FormData(e.target);
     let login = data.get("login");
@@ -11,8 +11,34 @@ document.querySelector("#register").addEventListener("submit", (e) => {
                 login,
                 password,
             }),
-        });
-    }else{
-        alertify.error("Паролі не співпадають")
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.message === "User created") {
+                    window.location.assign("/login");
+                }
+            });
+    } else {
+        alertify.error("Паролі не співпадають");
     }
-})
+});
+
+document.querySelector(".login")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let data = new FormData(e.target);
+    let login = data.get("login");
+    let password = data.get("password");
+    fetch("/login", {
+        method: "POST",
+        body: JSON.stringify({
+            login,
+            password,
+        }),
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.message === "User logged in") {
+                window.location.assign("/");
+            }
+        });
+});
