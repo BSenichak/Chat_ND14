@@ -5,6 +5,7 @@ let path = require("path");
 let fs = require("fs");
 let socket = require("socket.io");
 let bcrypt = require("bcrypt")
+let jwt = require("jsonwebtoken")
 
 let pathToIndex = path.join(__dirname, "static", "index.html");
 let index = fs.readFileSync(pathToIndex, "utf-8");
@@ -72,8 +73,23 @@ let server = http
                 req.on("data", (chunk)=> datalogin += chunk)
                 req.on("end",async ()=>{
                     datalogin = JSON.parse(datalogin)
-                    
-                    res.end(JSON.stringify({status: "ok"}))
+                    let user = await db.getUser(datalogin.login)
+                    if(user.length == 0){
+                        res.writeHead(400)
+                        res.end(JSON.stringify({status: "wrong password or login"}))
+                        return;
+                    }
+                    user = user[0]
+                    if(await bcrypt.compare(datalogin.password, user.password)){
+                        let token = jwt.sign({login: user.login, id: user.id}, "MAXIMKA", {expiresIn: "1h"} )
+
+                        
+                        res.end(JSON.stringify({status: "ok", token, login: user.login, id: user.id}))
+                    }else{
+                        res.writeHead(400)
+                        res.end(JSON.stringify({status: "wrong password or login"}))
+                        return;
+                    }
                 })
                 break;
             default:

@@ -1,4 +1,6 @@
 const server = io()
+let login = document.cookie.split("; ").find(el=>el.startsWith("login"))
+console.log(login)
 let nickname = "Maksymcyk"
 document.querySelector(".form button").addEventListener("click", sendMessage)
 
